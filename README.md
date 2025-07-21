@@ -26,6 +26,12 @@ _A versatile desktop image editing application built with Python and PyQt5, offe
 
 **PyQt PaintMaster: Professional Image Editor**, created by Adrian Lesniak, is a desktop application designed to provide a comprehensive suite of tools for image creation and manipulation. Built with **Python** and the **PyQt5** GUI framework, it aims to offer a user-friendly yet powerful experience similar to professional paint programs. Users can leverage a variety of drawing tools, create geometric shapes, apply image filters and effects, manage colors, and perform essential file operations. The application also supports crucial productivity features like undo/redo and keyboard shortcuts.
 
+<br> 
+<p align="center">
+  <img src="screenshots/1.gif" width="90%">
+</p>
+<br>
+
 ## ✨ Key Features
 
 ### 🖌️ Drawing & Shape Tools
@@ -73,9 +79,21 @@ _A versatile desktop image editing application built with Python and PyQt5, offe
 
 ## 🖼️ Screenshots (Conceptual)
 
-**Coming soon!**
+_Screenshots of the PyQt PaintMaster application, including: the main interface with a canvas, toolbars, menu bar, color picker, layer panel (if applicable), and examples of drawing tools and image effects being applied._
 
-_This section would ideally show screenshots of the PyQt PaintMaster application, including: the main interface with a canvas, toolbars, menu bar, color picker, layer panel (if applicable), and examples of drawing tools and image effects being applied._
+<p align="center">
+  <img src="screenshots\1.jpg" width="300"/>
+  <img src="screenshots\2.jpg" width="300"/>
+  <img src="screenshots\3.jpg" width="300"/>
+  <img src="screenshots\4.jpg" width="300"/>
+  <img src="screenshots\5.jpg" width="300"/>
+  <img src="screenshots\6.jpg" width="300"/>
+  <img src="screenshots\7.jpg" width="300"/>
+  <img src="screenshots\8.jpg" width="300"/>
+  <img src="screenshots\9.jpg" width="300"/>
+  <img src="screenshots\10.jpg" width="300"/>
+</p>
+
 
 ## ⚙️ System Requirements & Dependencies
 
