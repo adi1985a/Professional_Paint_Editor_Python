@@ -179,12 +179,26 @@ class Canvas(QWidget):
         if len(self.undo_stack) > 1:
             self.redo_stack.append(self.undo_stack.pop())
             self.image = self.undo_stack[-1].copy()
+            # Ensure image matches widget size
+            if self.image.size() != self.size():
+                new_image = QImage(self.size(), QImage.Format_RGB32)
+                new_image.fill(Qt.white)
+                painter = QPainter(new_image)
+                painter.drawImage(QPoint(0, 0), self.image)
+                self.image = new_image
             self.update()
 
     def redo(self):
         if self.redo_stack:
             self.undo_stack.append(self.redo_stack.pop())
             self.image = self.undo_stack[-1].copy()
+            # Ensure image matches widget size
+            if self.image.size() != self.size():
+                new_image = QImage(self.size(), QImage.Format_RGB32)
+                new_image.fill(Qt.white)
+                painter = QPainter(new_image)
+                painter.drawImage(QPoint(0, 0), self.image)
+                self.image = new_image
             self.update()
 
     def new_canvas(self):
@@ -192,13 +206,15 @@ class Canvas(QWidget):
         self.save_to_undo_stack()
         self.update()
 
-    def save_image(self):
+    def save_image(self, on_done=None):
         file_path, _ = QFileDialog.getSaveFileName(self, "Save Image", "", 
                                                  "PNG Files (*.png);;JPG Files (*.jpg);;All Files (*.*)")
         if file_path:
             self.image.save(file_path)
+            if on_done:
+                on_done('Obraz został zapisany.')
 
-    def open_image(self):
+    def open_image(self, on_done=None):
         file_path, _ = QFileDialog.getOpenFileName(self, "Open Image", "",
                                                  "PNG Files (*.png);;JPG Files (*.jpg);;All Files (*.*)")
         if file_path:
@@ -206,41 +222,50 @@ class Canvas(QWidget):
             self.image = self.image.scaled(self.size(), Qt.KeepAspectRatio)
             self.save_to_undo_stack()
             self.update()
+            if on_done:
+                on_done('Obraz został otwarty.')
 
-    def apply_filter(self, filter_name):
+    def apply_filter(self, filter_name, on_done=None):
         # Convert QImage to PIL Image
         buffer = QBuffer()
         buffer.open(QBuffer.ReadWrite)
         self.image.save(buffer, "PNG")
         pil_image = Image.open(io.BytesIO(buffer.data()))
-        
+        changed = False
         if filter_name == 'blur':
             pil_image = pil_image.filter(ImageFilter.BLUR)
+            changed = True
         elif filter_name == 'sharpen':
             pil_image = pil_image.filter(ImageFilter.SHARPEN)
+            changed = True
         elif filter_name == 'grayscale':
             pil_image = pil_image.convert('L').convert('RGB')
+            changed = True
         elif filter_name == 'invert':
             pil_image = ImageOps.invert(pil_image)
+            changed = True
         elif filter_name == 'brightness':
             factor, ok = QInputDialog.getDouble(self, 'Brightness',
                                               'Enter brightness factor (0.0-2.0):',
                                               1.0, 0.0, 2.0, 2)
             if ok:
                 pil_image = ImageEnhance.Brightness(pil_image).enhance(factor)
+                changed = True
         elif filter_name == 'contrast':
             factor, ok = QInputDialog.getDouble(self, 'Contrast',
                                               'Enter contrast factor (0.0-2.0):',
                                               1.0, 0.0, 2.0, 2)
             if ok:
                 pil_image = ImageEnhance.Contrast(pil_image).enhance(factor)
-
-        # Convert back to QImage
-        buffer = io.BytesIO()
-        pil_image.save(buffer, format='PNG')
-        self.image.loadFromData(buffer.getvalue())
-        self.save_to_undo_stack()
-        self.update()
+                changed = True
+        if changed:
+            buffer = io.BytesIO()
+            pil_image.save(buffer, format='PNG')
+            self.image.loadFromData(buffer.getvalue())
+            self.save_to_undo_stack()
+            self.update()
+            if on_done:
+                on_done('Zastosowano filtr: ' + filter_name)
 
     def draw_gradient(self, painter, event):
         gradient = QLinearGradient(self.start_pos, event.pos())

@@ -1,0 +1,5 @@
+2025-07-21 23:26:58 [ERROR] B³¹d krytyczny aplikacji: name 'new_action' is not defined
+2025-07-21 23:28:29 [ERROR] B³¹d krytyczny aplikacji: name 'new_action' is not defined
+2025-07-21 23:38:37 [ERROR] B³¹d przy wczytywaniu ustawieñ: 'ToolBar' object has no attribute 'set_tool'
+2025-07-21 23:41:06 [ERROR] B³¹d przy wczytywaniu ustawieñ: 'ToolBar' object has no attribute 'set_tool'
+2025-07-21 23:42:05 [ERROR] B³¹d przy wczytywaniu ustawieñ: 'ToolBar' object has no attribute 'set_tool'
